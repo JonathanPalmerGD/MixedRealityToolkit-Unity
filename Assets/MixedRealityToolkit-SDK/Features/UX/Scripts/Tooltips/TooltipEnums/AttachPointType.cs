@@ -9,22 +9,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// anchor. This ensures a natural-looking attachment where the connector line
     /// meets the label.
     /// </summary>
+    /// <remarks>
+    /// These double as array positions.
+    /// </remarks>
     public enum ToolTipAttachPointType
     {
-        // Specific options
-        // These double as array positions
-        BotMiddle = 0,
+        #region Specific options
+
+        BottomMiddle = 0,
         TopMiddle,
         RightMiddle,
         LeftMiddle,
-        BotRightCorner,
-        BotLeftCorner,
+        BottomRightCorner,
+        BottomLeftCorner,
         TopRightCorner,
         TopLeftCorner,
-        // Automatic options
+
+        #endregion Specific options
+
+        #region Automatic options
+
         Center,
         Closest,
         ClosestMiddle,
         ClosestCorner
+
+        #endregion Automatic options
     }
 }

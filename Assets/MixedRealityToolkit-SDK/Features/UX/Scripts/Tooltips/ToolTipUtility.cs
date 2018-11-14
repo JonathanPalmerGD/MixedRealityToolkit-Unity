@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 {
     /// <summary>
     /// Static class providing useful functions for
-    /// finding ToolTip Attachpoint information.
+    /// finding ToolTip Attach point information.
     /// </summary>
     public static class ToolTipUtility
     {
@@ -24,8 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// <returns>Vector3 the point in localPivotPositions which is closest to the anchor position</returns>
         public static Vector3 FindClosestAttachPointToAnchor(Transform anchor, Transform contentParent, Vector3[] localPivotPositions, ToolTipAttachPointType pivotType)
         {
+            Vector3 currentPivot;
             Vector3 nearPivot = Vector3.zero;
-            Vector3 currentPivot = Vector3.zero;
             Vector3 anchorPosition = anchor.position;
             float nearDist = Mathf.Infinity;
 
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
                 // Search corner pivots
                 case ToolTipAttachPointType.ClosestCorner:
-                    for (int i = (int)ToolTipAttachPointType.BotRightCorner; i < (int)ToolTipAttachPointType.TopLeftCorner; i++)
+                    for (int i = (int)ToolTipAttachPointType.BottomRightCorner; i < (int)ToolTipAttachPointType.TopLeftCorner; i++)
                     {
                         currentPivot = localPivotPositions[i];
                         float dist = Vector3.Distance(anchorPosition, contentParent.TransformPoint(currentPivot));
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
                 // Search middle pivots
                 case ToolTipAttachPointType.ClosestMiddle:
-                    for (int i = (int)ToolTipAttachPointType.BotMiddle; i < (int)ToolTipAttachPointType.LeftMiddle; i++)
+                    for (int i = (int)ToolTipAttachPointType.BottomMiddle; i < (int)ToolTipAttachPointType.LeftMiddle; i++)
                     {
                         currentPivot = localPivotPositions[i];
                         float dist = Vector3.Distance(anchorPosition, contentParent.TransformPoint(currentPivot));
@@ -83,20 +83,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
                 default:
                     // For all other types, just use the array position or contentParent
-                    //position if there is no array provided.
-                    if (localPivotPositions == null || localPivotPositions.Length == 0)
-                    {
-                        nearPivot = contentParent.position;
-                    }
-                    else
-                    {
-                        nearPivot = localPivotPositions[(int)pivotType];
-                    }
+                    // position if there is no array provided.
+                    nearPivot = localPivotPositions.Length == 0
+                        ? contentParent.position
+                        : localPivotPositions[(int)pivotType];
                     break;
             }
 
             return nearPivot;
         }
+
         /// <summary>
         /// gets an array of pivot positions
         /// </summary>
@@ -112,13 +108,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             //Get the extents of our content size
             localContentSize *= 0.5f;
 
-            pivotPositions[(int)ToolTipAttachPointType.BotMiddle] = new Vector3(0f, -localContentSize.y, 0f);
+            pivotPositions[(int)ToolTipAttachPointType.BottomMiddle] = new Vector3(0f, -localContentSize.y, 0f);
             pivotPositions[(int)ToolTipAttachPointType.TopMiddle] = new Vector3(0f, localContentSize.y, 0f);
             pivotPositions[(int)ToolTipAttachPointType.LeftMiddle] = new Vector3(-localContentSize.x, 0f, 0f); // was right
             pivotPositions[(int)ToolTipAttachPointType.RightMiddle] = new Vector3(localContentSize.x, 0f, 0f); // was left
 
-            pivotPositions[(int)ToolTipAttachPointType.BotLeftCorner] = new Vector3(-localContentSize.x, -localContentSize.y, 0f); // was right
-            pivotPositions[(int)ToolTipAttachPointType.BotRightCorner] = new Vector3(localContentSize.x, -localContentSize.y, 0f); // was left
+            pivotPositions[(int)ToolTipAttachPointType.BottomLeftCorner] = new Vector3(-localContentSize.x, -localContentSize.y, 0f); // was right
+            pivotPositions[(int)ToolTipAttachPointType.BottomRightCorner] = new Vector3(localContentSize.x, -localContentSize.y, 0f); // was left
             pivotPositions[(int)ToolTipAttachPointType.TopLeftCorner] = new Vector3(-localContentSize.x, localContentSize.y, 0f); // was right
             pivotPositions[(int)ToolTipAttachPointType.TopRightCorner] = new Vector3(localContentSize.x, localContentSize.y, 0f); // was left
         }
